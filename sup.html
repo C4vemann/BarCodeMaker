@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body{
+				display:flex;
+				flex-direction:row;
+				justify-content: space-evenly;
+				flex-wrap:wrap;
+			}
+			.option{
+				display:flex;
+				flex-direction:column;
+				text-align:center;
+				width:300px;
+				border:2px solid black;
+				margin:5px 0;
+			}
+			.option_header{
+			}
+			.option_textbox{
+
+			}
+			.option_canvas{
+
+			}
+		</style>
+	</head>
+	<body>	
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+		<script>
+			let options = ["7X70","5430","5820","5000"];
+			let optionObjects = [];
+			const barcodeValue = "12345";
+
+			let option = (x) => {
+				let name = x;
+				let version;
+				let textbar = tb();
+				let canvas = c();
+				let element = init(x);
+
+				function c(){
+					let d = document.createElement("canvas");
+					d.className = "option_canvas";
+					return d;
+				}
+
+				function tb(x){
+					let t = document.createElement("input");
+					t.type = "text";
+					t.className = "option_textbox";
+					return t;
+				}
+
+				function init(x){
+					let el = document.createElement("div");
+					el.className = "option";
+					let h = document.createElement("h1");
+					h.innerText = x;
+					h.className = "option_header";
+					el.append(h);
+					el.append(textbar);
+					let b = document.createElement("button");
+					b.innerText = "Create";
+					b.className = "option_submit";
+					b.addEventListener("click", () => {
+						JsBarcode(canvas, textbar.value);
+					});
+					el.append(b);
+					el.append(canvas);
+					return el;
+				}
+
+				function setName(x){
+					name = x;
+				}
+
+				function getName(){
+					return name;
+				}
+
+				function setVersion(x){
+					version = x;
+				}
+
+				function getVersion(){
+					return version;
+				}
+
+				function getElement(){
+					return element;
+				}
+
+				return{
+					setName,
+					getName,
+					setVersion,
+					getVersion,
+					constructor,
+					getElement
+				}
+			}
+
+			for(let x of options){
+				optionObjects[optionObjects.length] = option(x);
+				document.getElementsByTagName("body")[0].append(optionObjects[optionObjects.length - 1].getElement());
+			}
+
+		</script>
+	</body>
+</html>
